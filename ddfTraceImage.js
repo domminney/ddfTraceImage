@@ -1,14 +1,15 @@
 var fs = require('fs')
 var jimp = require('jimp')
 
-var inFile = 'in.png'
-var guideFile = 'guide.png'
-var useGuide = false
-var randomiseStart = true
-var deleteOutputsOnStart = true
-var randomiseShift = false
-var agents = 1
-var savestep = 200
+var inFile = 'in.png'  // the file you want to trace
+var guideFile = 'guide.png'  // the guide file
+var useGuide = false  // use the guide file to determine the order of pixels
+var randomiseStart = true // randomise the start pixel order    
+var deleteOutputsOnStart = true // delete all files in the outputs folder on start
+var randomiseShift = false // randomise the walk order
+var agents = 1 // number of drawing agents
+var savestep = 200  // save picture every n steps
+
 
 
 var img, w, h, startx, starty, inc, grid, newimg, startPixelList
