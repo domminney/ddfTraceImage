@@ -6,27 +6,28 @@ var guideFile = 'guide.png'
 var useGuide = false
 var randomiseStart = true
 var deleteOutputsOnStart = true
-
-var img, w, h, startx, starty, inc, grid, newimg, startPixelList
-
+var randomiseShift = false
+var agents = 1
 var savestep = 200
 
+
+var img, w, h, startx, starty, inc, grid, newimg, startPixelList
 var threads = 0
 
 
-if (deleteOutputsOnStart) {
+async function main() {
 
-    var files = fs.readdirSync('outputs')
+    if (deleteOutputsOnStart) {
 
-    for (var i = 0; i < files.length; i++) {
+        var files = fs.readdirSync('outputs')
 
-        fs.unlinkSync('outputs/' + files[i])
+        for (var i = 0; i < files.length; i++) {
+
+            fs.unlinkSync('outputs/' + files[i])
+
+        }
 
     }
-
-}
-
-async function main() {
 
     img = await jimp.Jimp.read(inFile)
     w = img.bitmap.width
@@ -48,8 +49,7 @@ async function main() {
                 visited: false,
                 x: x,
                 y: y,
-                black: jimp.intToRGBA(img.getPixelColor(x, y)).r < 254 ? true : false,
-                nofollow: false
+                black: jimp.intToRGBA(img.getPixelColor(x, y)).r < 254 ? true : false
             }
 
             if (grid[x + ',' + y].black) startPixelList.push(x + ',' + y)
@@ -94,7 +94,7 @@ async function main() {
 
 
 
-    for (var c = 0; c < 1; c++) {
+    for (var c = 0; c < agents; c++) {
         setTimeout(nextTrace, c * 1, c)
     }
 
@@ -195,7 +195,7 @@ async function trace(startx, starty, shift) {
         }
 
 
-        //neighbours = neighbours.sort(() => Math.random() - 0.5)
+        if (randomiseShift) neighbours = neighbours.sort(() => Math.random() - 0.5)
 
 
         for (var i = 0; i < neighbours.length; i++) {
